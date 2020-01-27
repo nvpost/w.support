@@ -1,0 +1,63 @@
+   <!-- Compiled and minified CSS -->
+   <meta charset="utf-8">
+   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+            
+
+
+
+<div id="app" class="container">
+	<div class="date_field">
+		<input type="text" class="datepicker" v-model="from" @change="setNewDate($event, 'from')">
+		<input type="text" class="datepicker" v-model="to" @change="setNewDate($event, 'to')">
+		<div class="waves-effect waves-light btn" @click="getData(true)">Показать</div>
+		<div class="form_count" v-if="form_data.length>0">Всего записей: {{form_data.length}}</div>
+	</div>
+	<div class="row" v-if="form_data!='no'&&form_data.length>0">
+	
+		<div class="form_item" v-for="(form_item, form_item_index) in form_data" :key="form_item_index">
+			<div class="form_item_data">
+				<table class="form_item_data_table" @click="sh(form_item_index)">
+					<tr>
+						<td>{{form_item.id}}</td>
+						<td>{{form_item.created_at}}</td>
+						<td>{{form_item.username}}</td>
+						<td>{{form_item.ip}}</td>
+					</tr>
+				</table>
+				<div class="form_item_body" :data-idx="form_item_index">
+					<table class="form_item_body_data_table highlight">
+						<tr v-for="(row, index_row) in form_item.data" v-if="noShow(row.field_name)">
+							<td>{{row.field_name}}</td>
+							<td v-if="row.field_name=='Страница'"><a :href="row.value" _target="blank">{{row.value}}</a></td>
+							<td v-else>{{row.value}}</td>
+						</tr>	
+					</table>
+				</div>	
+			</div>
+		</div>
+		<div class="support_pagination">
+			<div class="waves-effect waves-light btn" v-for="(p, p_index) in pages" @click="setPage(p_index+1)" :disabled="p_index+1==page">{{p}}</div>
+		</div>
+	</div>
+	<div v-else class="row support-loader">
+		<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+	</div>
+	<div class="row no" v-if="form_data=='no'">
+		<h2>Залогинтесь</h2>
+	</div>
+
+</div>
+
+    <script src="script.js"></script>
+
+
+<style>
+
+</style>	
